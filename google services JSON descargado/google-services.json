@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "534647122399",
+    "project_id": "wallet-client-spartanhill",
+    "storage_bucket": "wallet-client-spartanhill.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:534647122399:android:fb9295a4a8f70e98cabc6a",
+        "android_client_info": {
+          "package_name": "com.spartanhill.walletclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "534647122399-qbmsgsp4dv8j425hpr4nbqjodrr75ngd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIcHMoavW0YquYRURTTspAni0G1kVRPrc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "534647122399-qbmsgsp4dv8j425hpr4nbqjodrr75ngd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
