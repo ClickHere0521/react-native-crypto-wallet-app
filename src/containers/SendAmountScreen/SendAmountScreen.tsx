@@ -5,7 +5,8 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-  BackHandler
+  BackHandler,
+  Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -15,6 +16,9 @@ import lightStyle from './Styles/SendAmountLightScreen';
 import { SelectedTheme } from '../../actions/userAction';
 import { Images, Colors } from '../../theme';
 import LinearGradient from 'react-native-linear-gradient';
+import database from '@react-native-firebase/database';
+// import { firebase } from '@react-native-firebase/database';
+
 export interface Props {
   navigation: any;
   initApp: any;
@@ -25,6 +29,14 @@ export interface Props {
 class SendAmountScreen extends React.PureComponent<Props> {
   constructor(props: Props) {
     super(props);
+    this.state = {
+      sendAmount: {
+        btc: 0.002146655,
+        usd: 13.23,
+        fee: 0.00023386,
+        remain: 20
+      }
+    };
   }
   componentDidMount = () => {
     BackHandler.addEventListener('hardwareBackPress', this.backHandler);
@@ -36,6 +48,28 @@ class SendAmountScreen extends React.PureComponent<Props> {
     const { navigation } = this.props;
     return navigation.goBack();
   };
+  handleSend = () => {
+    if (this.state.sendAmount.btc == "")
+      Alert.alert(
+        "Warning",
+        "Please put the bitcoin amount",
+        [
+          { text: "OK", onPress: () => { return; }}
+        ]
+      );
+    else {
+      database()
+      .ref('/users/123')
+      .set({
+        name: 'Ada Lovelace',
+        age: 31,
+      })
+      .then(() => console.log('Data set.'));
+    }
+  }
+  handleBtc = (event) => {
+    this.setState({ sendAmount: { btc: event, usd: (parseFloat(event) * 5341.68).toFixed(3), fee: (parseFloat(event) / 0.92).toFixed(3), remain: 20 - event } })
+  }
   render() {
     const { navigation, themeType } = this.props;
     const styles = themeType === 'light' ? lightStyle : darkStyle;
@@ -69,8 +103,34 @@ class SendAmountScreen extends React.PureComponent<Props> {
               <Text style={styles.usdText}>USD</Text>
             </View>
             <View style={styles.btcTextValueView}>
-              <Text style={styles.btcTextValue}>0.002146655</Text>
-              <Text style={styles.usdTextValue}>$13.23</Text>
+              <TextInput
+                style={styles.btcTextValue}
+                placeholder={'0.002146655'}
+                value={this.state.sendAmount.btc}
+                onChangeText={(searchText: any) =>
+                  this.handleBtc(searchText)
+                }
+                placeholderTextColor={
+                  themeType === 'light'
+                    ? Colors.bluedarkColor
+                    : Colors.cloudyBlue
+                }
+              />
+              {/* <TextInput
+                style={styles.usdTextValue}
+                // placeholder={'13.23'}
+                value={this.state.sendAmount.usd}
+                onChangeText={(searchText: any) =>
+                  this.setState({ sendAmount : { btc: parseFloat(searchText) / 5341.68, usd:searchText } })
+                }
+                placeholderTextColor={
+                  themeType === 'light'
+                    ? Colors.bluedarkColor
+                    : Colors.cloudyBlue
+                }
+              /> */}
+              {/* <Text style={styles.btcTextValue}>{this.state.sendAmount.btc}</Text> */}
+              <Text style={styles.usdTextValue}>${this.state.sendAmount.usd}</Text>
             </View>
             <View style={styles.separatorLine} />
             <LinearGradient
@@ -80,12 +140,12 @@ class SendAmountScreen extends React.PureComponent<Props> {
             </LinearGradient>
 
             <Text style={styles.networkText}>Network Fee</Text>
-            <Text style={styles.networkTextValue}>0.00023386 BTC</Text>
+            <Text style={styles.networkTextValue}>{this.state.sendAmount.fee} BTC</Text>
 
             <View style={styles.networkTextSeparatorLine} />
 
             <Text style={styles.RemainingText}>Remaining Balance</Text>
-            <Text style={styles.RemainingTextValue}>20 BTC</Text>
+            <Text style={styles.RemainingTextValue}>{this.state.sendAmount.remain} BTC</Text>
             <TouchableOpacity>
               <Image
                 source={
@@ -122,6 +182,7 @@ class SendAmountScreen extends React.PureComponent<Props> {
               shadowRadius={15}
               buttonStyle={styles.nextBtn}
               title={'Next'}
+              onPress={() => this.handleSend()}
             />
           </View>
         </Content>

@@ -1,6 +1,6 @@
-# Crypto React Native Wallet App
+# Zluck React Native
 ```
-1) git clone https://github.com/ClickHere0521/RN-Crypto-Wallet-App.git <ProjectName>
+1) git clone https://gitlab.com/zluck/mobile/react-native/zluck-rn.git <ProjectName>
 
 2) cd <ProjectName>
 
