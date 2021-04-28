@@ -25,6 +25,8 @@ import BeingwatchedScreen from '../containers/Beingwatched/BeingwatchedScreen';
 import SecurityEnableScreen from '../containers/SecurityEnable/SecurityEnableScreen';
 import PortfolioScreen from '../containers/PortfolioScreen/PortfolioScreen';
 import SecurityWalletScreen from '../containers/SecurityWallet/SecurityWallet';
+import SignInScreen from '../containers/SignIn/SignIn';
+import SignUpScreen from '../containers/SignUp/SignUp'; 
 
 const AppNavigation = createStackNavigator(
   {
@@ -33,6 +35,12 @@ const AppNavigation = createStackNavigator(
     },
     Welcome: {
       screen: WelcomeScreen
+    },
+    SignIn: {
+      screen: SignInScreen
+    },
+    SignUp: {
+      screen: SignUpScreen
     },
     SwiperScreen: {
       screen: SwiperSlideScreen

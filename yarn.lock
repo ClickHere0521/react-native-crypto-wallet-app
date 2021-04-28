@@ -1178,6 +1178,11 @@
     "opencollective-postinstall" "^2.0.1"
     "superstruct" "^0.6.2"
 
+"@react-native-firebase/auth@^11.3.3":
+  "integrity" "sha512-7tKYMdipsOLCQg0GgJhhOUHr76Bllk1mx9m1Pc2IgZj2QEkRNC60AzL9X56StQXAsHuTyNP6sVnOa8vAnO5Egw=="
+  "resolved" "https://registry.npmjs.org/@react-native-firebase/auth/-/auth-11.3.3.tgz"
+  "version" "11.3.3"
+
 "@react-native-firebase/database@^11.3.3":
   "integrity" "sha512-5bFlpVYDEAAD7L6E+rPrOQdh3BPvQfec3ZVtdDDXaqrpkGWJlfviCSGdSrRAmindV1PI/1eVKu7a2j0hWawH0w=="
   "resolved" "https://registry.npmjs.org/@react-native-firebase/database/-/database-11.3.3.tgz"

@@ -47,7 +47,7 @@ class WelcomeScreen extends React.PureComponent<Props> {
         <View style={styles.buttonView}>
           <Button
             isArrowBtnTrue
-            onPress={() => navigation.navigate('DashBoard')}
+            onPress={() => navigation.navigate('SignIn')}
             style={styles.shadowStyle}
             shadowRadius={15}
             buttonStyle={styles.getStartBtn}
