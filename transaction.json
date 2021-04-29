@@ -1,24 +1,26 @@
 {
-"status": null,
-"balances": {
-"BTC": 0.00350000000000000000,
-"USDT": 34.32500000000000000000
-},
-"depositAddresses": {
-"BTC": "ms7YBh3SoQAidKHJ5D7NcivuFq2cixUR9C",
-"ETH": "0xe989ef08f9c4e27051147556bdbff7e9cd3458c1"
-},
-"totalBalances": {
-"BTC": 0.00350000000000000000,
-"USDT": 34.32500000000000000000
-},
-"availableBalances": {
-"BTC": 0.00350000000000000000,
-"USDT": 34.32500000000000000000
-},
-"callbackUrl": null,
-"srn": "wallet:WA_4PYQCREB4FL",
-"notes": "Wallet for mrwings-cali1",
-"name": "mrwings-cali1",
-"id": "WA_4PYQCREB4FL",
+    "status": null,
+    "balances": {
+        "BTC": 0.00350000000000000000,
+        "USDT": 34.32500000000000000000
+    },
+    "depositAddresses": {
+        "BTC": "ms7YBh3SoQAidKHJ5D7NcivuFq2cixUR9C",
+        "ETH": "0xe989ef08f9c4e27051147556bdbff7e9cd3458c1"
+    },
+    "totalBalances": {
+        "BTC": 0.00350000000000000000,
+        "USDT": 34.32500000000000000000
+    },
+    "availableBalances": {
+        "BTC": 0.00350000000000000000,
+        "USDT": 34.32500000000000000000
+    },
+    "callbackUrl": null,
+    "srn": "wallet:WA_4PYQCREB4FL",
+    "notes": "Wallet for mrwings-cali1",
+    "name": "mrwings-cali1",
+    "id": "WA_4PYQCREB4FL",
+    "from": "sderyaginviktor@gmail.com",
+    "to": "valeriahonest@gmail.com"
 }

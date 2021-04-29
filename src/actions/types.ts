@@ -8,3 +8,4 @@ export const INIT_ROUTE = 'INIT_ROUTE';
 export const MOVE_BACK = 'MOVE_BACK';
 export const SET_LAST_BACK_TIME = 'SET_LAST_BACK_TIME';
 export const SET_THEME = 'SET_THEME';
+export const Update_Remain_Btc = 'Update_Remain_Btc';

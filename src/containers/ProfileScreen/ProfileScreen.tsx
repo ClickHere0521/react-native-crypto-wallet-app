@@ -7,7 +7,8 @@ import {
   FlatList,
   TouchableOpacity,
   BackHandler,
-  Modal
+  Modal,
+  Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -27,6 +28,7 @@ import {
   ProfileModalData,
   ProfileFlatListData
 } from '../../config/const';
+import auth from '@react-native-firebase/auth';
 export interface Props {
   navigation: any;
   addSelectedTheme: any;
@@ -115,7 +117,7 @@ class ProfileScreen extends React.PureComponent<Props, state> {
                       <Text style={styles.modalText}>{item.name}</Text>
                     </TouchableOpacity>
                     {ProfileModalData.length > 0 &&
-                    index === ProfileModalData.length - 1 ? null : (
+                      index === ProfileModalData.length - 1 ? null : (
                       <View style={styles.modalSeparator} />
                     )}
                   </View>
@@ -162,6 +164,27 @@ class ProfileScreen extends React.PureComponent<Props, state> {
               </View>
             </View>
             <View style={styles.QrCodeTextView}>
+              <TouchableOpacity
+                style={{ marginBottom: 30 }}
+                onPress={() => {
+                  auth()
+                    .signOut()
+                    .then(() => {
+                      Alert.alert(
+                        "Success",
+                        "You have signed out",
+                        [
+                          { text: "OK", onPress: () => { navigation.navigate("SwiperScreen") } }
+                        ]
+                      )
+                    });                  
+                }}>
+                <View style={styles.flatListInnerTextView}>
+                  <Text style={styles.flatListInnerTitleText}>
+                    SignOut
+                    </Text>
+                </View>
+              </TouchableOpacity>
               <Text style={styles.QrCodeVersionNameText}>Wallet SH 1.1.04</Text>
               <Text style={styles.QrCodeSubText}>
                 Lorem, ipsum dolor sit amet
@@ -180,14 +203,14 @@ class ProfileScreen extends React.PureComponent<Props, state> {
                     themeType === 'light'
                       ? [Colors.white, Colors.white]
                       : [
-                          Colors.darkGreyBlueThired,
-                          Colors.darkGreyBlueThired,
-                          Colors.duskSecond
-                        ]
+                        Colors.darkGreyBlueThired,
+                        Colors.darkGreyBlueThired,
+                        Colors.duskSecond
+                      ]
                   }
                   style={styles.securityFlatListView}>
                   <TouchableOpacity
-                  activeOpacity={0.7}
+                    activeOpacity={0.7}
                     onPress={() => {
                       {
                         index === 1 && navigation.navigate('ContactUs');
@@ -227,10 +250,10 @@ class ProfileScreen extends React.PureComponent<Props, state> {
                 themeType === 'light'
                   ? [Colors.white, Colors.white]
                   : [
-                      Colors.darkGreyBlueThired,
-                      Colors.darkGreyBlueThired,
-                      Colors.duskSecond
-                    ]
+                    Colors.darkGreyBlueThired,
+                    Colors.darkGreyBlueThired,
+                    Colors.duskSecond
+                  ]
               }
               style={[styles.enableAssetView]}>
               <View style={styles.enableView}>
@@ -309,10 +332,10 @@ class ProfileScreen extends React.PureComponent<Props, state> {
                     themeType === 'light'
                       ? [Colors.white, Colors.white]
                       : [
-                          Colors.darkGreyBlueThired,
-                          Colors.darkGreyBlueThired,
-                          Colors.duskSecond
-                        ]
+                        Colors.darkGreyBlueThired,
+                        Colors.darkGreyBlueThired,
+                        Colors.duskSecond
+                      ]
                   }
                   style={styles.flatListView}>
                   <View style={styles.flatListInnerView}>
@@ -368,7 +391,7 @@ class ProfileScreen extends React.PureComponent<Props, state> {
           />
           {this.popupModal()}
         </Content>
-      </Container>
+      </Container >
     );
   }
 }

@@ -14,32 +14,63 @@ import { Container, Content, Header, Button } from '../../components';
 import darkStyle from './Styles/SendAmountScreen';
 import lightStyle from './Styles/SendAmountLightScreen';
 import { SelectedTheme } from '../../actions/userAction';
+import { UpdateRemainBtc } from '../../actions/userAction';
 import { Images, Colors } from '../../theme';
 import LinearGradient from 'react-native-linear-gradient';
 import database from '@react-native-firebase/database';
-// import { firebase } from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 
 export interface Props {
   navigation: any;
   initApp: any;
   addSelectedTheme: any;
   themeType: any;
+  updateBtc: any;
+  remainBtc: any;
 }
 
 class SendAmountScreen extends React.PureComponent<Props> {
   constructor(props: Props) {
     super(props);
+    const { remainBtc } = this.props;
     this.state = {
       sendAmount: {
         btc: 0.002146655,
         usd: 13.23,
         fee: 0.00023386,
-        remain: 20
-      }
+        remain: remainBtc
+      },
+      destination: ''
     };
   }
   componentDidMount = () => {
     BackHandler.addEventListener('hardwareBackPress', this.backHandler);
+    const user = auth().currentUser;
+    database()
+      .ref('transactions')
+      .on('value', snapshot => {
+        if (snapshot)
+          if (snapshot.val().sending)
+            if (snapshot.val().to == user.email)
+              Alert.alert(
+                "Bitcoin Received",
+                "You have received " + snapshot.val().availableBalances.BTC + " btc from " + snapshot.val().from + " successfully!",
+                [
+                  {
+                    text: "OK", onPress: () => {
+                      database()
+                        .ref('transactions')
+                        .update({
+                          "sending": false
+                        })
+                        .then(() => {
+                          return;
+                        })
+                    }
+                  }
+                ]
+              )
+      });
   };
   componentWillUnmount = () => {
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
@@ -49,26 +80,82 @@ class SendAmountScreen extends React.PureComponent<Props> {
     return navigation.goBack();
   };
   handleSend = () => {
-    if (this.state.sendAmount.btc == "")
+    const { updateBtc } = this.props;
+    const btc = this.state.sendAmount.btc;
+    const usd = this.state.sendAmount.usd;
+    const des = this.state.destination;
+    const remain = this.state.sendAmount.remain;
+    const user = auth().currentUser;
+
+    if (btc == "")
       Alert.alert(
         "Warning",
         "Please put the bitcoin amount",
         [
-          { text: "OK", onPress: () => { return; }}
+          { text: "OK", onPress: () => { return; } }
         ]
       );
+    else if (des == '')
+      Alert.alert(
+        "Warning",
+        "Please put the destination",
+        [
+          { text: "OK", onPress: () => { return; } }
+        ]
+      )
     else {
-      database()
-      .ref('/users/123')
-      .set({
-        name: 'Ada Lovelace',
-        age: 31,
-      })
-      .then(() => console.log('Data set.'));
+      const newReference = database()
+        .ref('/transactions');
+      newReference
+        .set({
+          "status": null,
+          "balances": {
+            "BTC": btc,
+            "USDT": usd
+          },
+          "depositAddresses": {
+            "BTC": "ms7YBh3SoQAidKHJ5D7NcivuFq2cixUR9C",
+            "ETH": "0xe989ef08f9c4e27051147556bdbff7e9cd3458c1"
+          },
+          "totalBalances": {
+            "BTC": btc,
+            "USDT": usd
+          },
+          "availableBalances": {
+            "BTC": btc,
+            "USDT": usd
+          },
+          "callbackUrl": null,
+          "srn": "wallet:WA_4PYQCREB4FL",
+          "notes": "Wallet for mrwings-cali1",
+          "name": "mrwings-cali1",
+          "id": "WA_4PYQCREB4FL",
+          "from": user.email,
+          "to": des,
+          "sending": true
+        })
+        .then(() => {
+          Alert.alert(
+            "Sucess",
+            "You sent " + btc + "bitcoin to " + des + " Successfully!",
+            [
+              {
+                text: "OK", onPress: () => {
+                  updateBtc(remain);
+                }
+              }
+            ]
+          )
+        });
+
     }
   }
   handleBtc = (event) => {
-    this.setState({ sendAmount: { btc: event, usd: (parseFloat(event) * 5341.68).toFixed(3), fee: (parseFloat(event) / 0.92).toFixed(3), remain: 20 - event } })
+    // const remainBtcTemp = this.state.sendAmount.remainBtc;
+    this.setState({ sendAmount: { btc: event, usd: (parseFloat(event) * 5341.68).toFixed(3), fee: (parseFloat(event) / 0.92).toFixed(3), remain: 18 - event } })
+  }
+  handleDes = (event) => {
+    this.setState({ destination: event })
   }
   render() {
     const { navigation, themeType } = this.props;
@@ -154,7 +241,7 @@ class SendAmountScreen extends React.PureComponent<Props> {
                 style={styles.addIconStyle}
               />
             </TouchableOpacity>
-            <View style={styles.bitCoinAddressView}>
+            {/* <View style={styles.bitCoinAddressView}>
               <TouchableOpacity style={styles.qrCodeButtonView}>
                 <Image
                   source={
@@ -177,11 +264,26 @@ class SendAmountScreen extends React.PureComponent<Props> {
                     : Colors.cloudyBlue
                 }
               />
+            </View> */}
+            <View style={styles.bitCoinAddressView}>
+              <TextInput
+                style={styles.bitCoinAddressTxtInput}
+                placeholder={'The email address you send'}
+                onChangeText={(searchText: any) =>
+                  this.handleDes(searchText)
+                }
+                type="email"
+                placeholderTextColor={
+                  themeType === 'light'
+                    ? Colors.bluedarkColor
+                    : Colors.cloudyBlue
+                }
+              />
             </View>
             <Button
               shadowRadius={15}
               buttonStyle={styles.nextBtn}
-              title={'Next'}
+              title={'Send'}
               onPress={() => this.handleSend()}
             />
           </View>
@@ -192,11 +294,11 @@ class SendAmountScreen extends React.PureComponent<Props> {
 }
 
 function mapStateToProps({ user }: any) {
-  return { themeType: user.themeType };
+  return { themeType: user.themeType, remainBtc: user.remainBtc };
 }
 
 function mapDispatchToProps(dispatch: any) {
-  return bindActionCreators({ addSelectedTheme: SelectedTheme }, dispatch);
+  return bindActionCreators({ addSelectedTheme: SelectedTheme, updateBtc: UpdateRemainBtc }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SendAmountScreen);

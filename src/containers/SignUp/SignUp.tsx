@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text, BackHandler } from 'react-native';
+import { View, Image, Text, BackHandler, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Container, SeparatorLine, Button } from '../../components';
@@ -8,6 +8,7 @@ import lightStyle from './Styles/SignUpLightScreen';
 import { SelectedTheme } from './../../actions/userAction';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
+import { NavigationProvider } from 'react-navigation';
 
 export interface Props {
   navigation: any;
@@ -19,38 +20,82 @@ class SignUpScreen extends React.PureComponent<Props> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      email: "-",
-      password: "-"
+      email: "",
+      password: "",
+      error: "",
+      valid: true
     }
   }
+
   componentDidMount = async () => {
     BackHandler.addEventListener('hardwareBackPress', this.backHandler);
   };
+
   componentWillUnmount = () => {
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
   };
+
   backHandler = () => {
     const { navigation } = this.props;
     return navigation.goBack();
   };
-  handleSignUp = () => {
+
+  __doSignUp = () => {
+    if (this.state.email == "") {
+      this.setState({ error: "Email required *" });
+      this.setState({ valid: false });
+      return
+    } else if (this.state.password == "" && this.state.password.trim() && this.state.password.length > 6) {
+      this.setState({ password: "Weak password, minimum 5 chars" });
+      this.setState({ valid: false })
+      return
+      // } else if (!__isValidEmail(email)) {
+      //   setError("Invalid Email")
+      //   setValid(false)
+    }
+
+    this.handleSignUp(this.state.email, this.state.password);
+  }
+
+  handleSignUp = (email, password) => {
+    const { navigation } = this.props;
     auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .createUserWithEmailAndPassword(email, password)
       .then(() => {
         console.log('User account created & signed in!');
+        navigation.navigate("DashBoard");
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
+          Alert.alert(
+            "Warning",
+            "That email address is already in use",
+            [
+              { text: "OK", onPress: () => { return; }}
+            ]
+          )
         }
 
         if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
+          Alert.alert(
+            "Warning",
+            "That email access is invalid",
+            [
+              { text: "OK", onPress: () => { return; }}
+            ]
+          )
         }
 
-        console.error(error);
+        Alert.alert(
+          "Warning",
+          error,
+          [
+            { text: "OK", onPress: () => { return; }}
+          ]
+        )
       });
   }
+
   render() {
     const { navigation, themeType } = this.props;
     const styles = themeType === 'light' ? lightStyle : darkStyle;
@@ -104,7 +149,11 @@ class SignUpScreen extends React.PureComponent<Props> {
             }
           />
         </View>
-        <Text>{this.state.password}</Text>
+        {this.state.error != "" ? (
+          <View style={{justifyContent: 'center', alignItems: 'center', alignSelf: 'center'}}>
+            <Text>{this.state.error}</Text>
+          </View>
+        ) : null}
         <View style={{ marginTop: 200 }}>
           <Button
             onPress={() => navigation.navigate('SignIn')}
@@ -117,7 +166,7 @@ class SignUpScreen extends React.PureComponent<Props> {
         <View style={styles.buttonView}>
           <Button
             isArrowBtnTrue
-            onPress={() => this.handleSignUp()}
+            onPress={() => this.__doSignUp()}
             style={styles.shadowStyle}
             shadowRadius={15}
             buttonStyle={styles.getStartBtn}
