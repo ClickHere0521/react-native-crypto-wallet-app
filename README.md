@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Zluck React Native
 ```
 1) git clone 
@@ -21,3 +22,6 @@
 ##Purpose
 ``` 
  this app is for crypto wallet, and users can make a transaction with their cryptocurrency.
+=======
+# RN-Crypto-Wallet-App
+>>>>>>> a7238b1c106f223a8f3df1b7c1375a7a09aa112f
