@@ -1,6 +1,6 @@
 # Zluck React Native
 ```
-1) git clone https://gitlab.com/zluck/mobile/react-native/zluck-rn.git <ProjectName>
+1) git clone 
 
 2) cd <ProjectName>
 
@@ -16,3 +16,8 @@
 
 8) cd ios && pod install && cd ..
 ```
+
+
+##Purpose
+``` 
+ this app is for crypto wallet, and users can make a transaction with their cryptocurrency.
