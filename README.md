@@ -8,5 +8,6 @@
   
 ## purpose
 ```
-  this app is for crypto wallet, and users can send or receive their crypto currencies.
+  This app is for crypto wallet where the users can send or receive their cryptocurrencies.
   built with React Native, typescript, firebase, and so on.
+  This is a piece of software that keeps track of the secret keys used to digitally sign cryptocurrency transactions for distributed ledgers.
