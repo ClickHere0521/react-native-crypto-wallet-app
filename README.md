@@ -9,3 +9,4 @@
   3. yarn build / npx react-native run-build
 ```
 
+If you like my work, please don't forget to ⭐
